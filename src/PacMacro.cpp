@@ -1,74 +1,119 @@
-#include "Poco/Net/HTTPServer.h"
-#include "Poco/Net/HTTPRequestHandler.h"
-#include "Poco/Net/HTTPRequestHandlerFactory.h"
-#include "Poco/Net/HTTPServerParams.h"
-#include "Poco/Net/HTTPServerRequest.h"
-#include "Poco/Net/HTTPServerResponse.h"
-#include "Poco/Net/HTTPServerParams.h"
-#include "Poco/Net/ServerSocket.h"
-#include "Poco/Net/WebSocket.h"
-#include "Poco/Net/NetException.h"
-#include "Poco/Util/ServerApplication.h"
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <libwebsockets.h>
 
-#include "Player.hpp"
 #include "Game.hpp"
 #include "Connection.hpp"
 
-class WebSocketRequestHandler: public Poco::Net::HTTPRequestHandler {
-public:
-	void handleRequest(Poco::Net::HTTPServerRequest& request, Poco::Net::HTTPServerResponse &response);
+
+enum protocols {
+	PROTOCOL_PACMACRO,
 };
 
-class RequestHandlerFactory: public Poco::Net::HTTPRequestHandlerFactory {
-public:
-	Poco::Net::HTTPRequestHandler *createRequestHandler(const Poco::Net::HTTPServerRequest &request);
-};
+static int
+callback_pacmacro(libwebsocket_context *context,
+			libwebsocket *wsi,
+			enum libwebsocket_callback_reasons reason,
+					       void *user, void *in, size_t len)
+{
+	Connection *conn = (Connection *)user;
+	const char *recv = (const char *)in;
 
-void WebSocketRequestHandler::handleRequest(Poco::Net::HTTPServerRequest &request, Poco::Net::HTTPServerResponse &response) {
-	try {
-		Poco::Net::WebSocket *ws = new Poco::Net::WebSocket(request, response);
-		Connection *player = new Connection(ws);
-	} catch (Poco::Net::WebSocketException& exc) {
-		switch (exc.code()) {
-		case Poco::Net::WebSocket::WS_ERR_HANDSHAKE_UNSUPPORTED_VERSION:
-			response.set("Sec-WebSocket-Version", Poco::Net::WebSocket::WEBSOCKET_VERSION);
-			// fallthrough
-		case Poco::Net::WebSocket::WS_ERR_NO_HANDSHAKE:
-		case Poco::Net::WebSocket::WS_ERR_HANDSHAKE_NO_VERSION:
-		case Poco::Net::WebSocket::WS_ERR_HANDSHAKE_NO_KEY:
-			response.setStatusAndReason(Poco::Net::HTTPResponse::HTTP_BAD_REQUEST);
-			response.setContentLength(0);
-			response.send();
-			break;
+	switch (reason) {
+
+	case LWS_CALLBACK_ESTABLISHED:
+		fprintf(stderr, "New Connection\n");
+		break;
+
+
+	case LWS_CALLBACK_RECEIVE:
+		fprintf(stderr, "rx %d\n %s\n", (int)len, (const char *)in);
+		if (strncmp(recv, "login", 5) == 0) {
+			if (strncmp(recv+6, "Pacman", 6) == 0) {
+				conn->_type = Pacman;
+			} else if (strncmp(recv+6, "Inky", 4) == 0) {
+				conn->_type = Inky;
+			} else if (strncmp(recv+6, "Pinky", 5) == 0) {
+				conn->_type = Pinky;
+			} else if (strncmp(recv+6, "Blinky", 6) == 0) {
+				conn->_type = Blinky;
+			} else if (strncmp(recv+6, "Clyde", 5) == 0) {
+				conn->_type = Clyde;
+			} else {
+				conn->_type = Display;
+			}
+			conn->wsi = wsi;
+			g_game->addConnection(conn);
+			const std::string &data = g_game->getGameState(conn->_type);
+
+			unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 512 + LWS_SEND_BUFFER_POST_PADDING];
+			unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+			size_t size = data.size();
+			memcpy(p, data.c_str(), size);
+			libwebsocket_write(wsi, p, size, LWS_WRITE_TEXT);
+
+		} else if (strncmp(recv, "moveto", 6) == 0) {
+			int pos = atoi(recv+7);
+			g_game->moveTo(conn->_type, pos);
+		} else if (strncmp(recv, "power", 5) == 0) {
+			int pos = atoi(recv+6);
+			g_game->power(pos);
 		}
-	}
-}
-
-Poco::Net::HTTPRequestHandler* RequestHandlerFactory::createRequestHandler(const Poco::Net::HTTPServerRequest &request) {
-	if (request.getURI() == "/")
-		return new WebSocketRequestHandler;
-	else
-		return nullptr;
-}
-
-class WebSocketServer: public Poco::Util::ServerApplication {
-protected:
-	int main(const std::vector<std::string>& args) {
-		g_game = new Game();
-
-		// set-up a server socket
-		Poco::Net::ServerSocket svs(37645);
-		// set-up a HTTPServer instance
-		Poco::Net::HTTPServer srv(new RequestHandlerFactory, svs, new Poco::Net::HTTPServerParams);
-		// start the HTTPServer
-		srv.start();
-		// wait for CTRL-C or kill
-		waitForTerminationRequest();
-		// Stop the HTTPServer
-		srv.stop();
-		return Application::EXIT_OK;
+		break;
+	case LWS_CALLBACK_CLOSED:
+		g_game->removeConnection(conn);
+		break;
+	default:
+		printf("ASDF %d\n", reason);
+		break;
 	}
 
+	return 0;
+}
+
+
+/* list of supported protocols and callbacks */
+
+static struct libwebsocket_protocols protocols[] = {
+	{
+		"pacmacro",
+		callback_pacmacro,
+		sizeof(Connection),
+	},
+	{
+		NULL, NULL, 0		/* End of list */
+	}
 };
 
-POCO_SERVER_MAIN(WebSocketServer)
+int main(int argc, char **argv)
+{
+	int n = 0;
+
+	int port = 37645;
+	struct libwebsocket_context *context;
+	int opts = 0;
+	const char *interface = NULL;
+
+
+	g_game = new Game();
+
+
+
+	context = libwebsocket_create_context(port, interface, protocols,
+				libwebsocket_internal_extensions,
+				nullptr, nullptr, -1, -1, opts);
+	if (context == NULL) {
+		fprintf(stderr, "libwebsocket init failed\n");
+		return -1;
+	}
+
+	while (n >= 0) {
+		n = libwebsocket_service(context, 5000);
+	}
+
+
+	libwebsocket_context_destroy(context);
+
+	return 0;
+}

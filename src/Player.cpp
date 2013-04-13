@@ -1,6 +1,7 @@
 
 #include <iostream>
-
+#include <libwebsockets.h>
+#include <cstring>
 
 #include "Player.hpp"
 #include "Game.hpp"
@@ -47,8 +48,12 @@ void Player::removeConnection(Connection *connection) {
 }
 
 void Player::send(const std::string &data) {
+	unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 512 + LWS_SEND_BUFFER_POST_PADDING];
+	unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
+	size_t size = data.size();
+	memcpy(p, data.c_str(), size);
 	for (Connection *x : _connections) {
-		x->send(data);
+		libwebsocket_write(x->wsi, p, size, LWS_WRITE_TEXT);
 	}
 
 }

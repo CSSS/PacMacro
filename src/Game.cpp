@@ -2,6 +2,7 @@
 #include <ctime>
 #include "Game.hpp"
 #include "Player.hpp"
+#include "Connection.hpp"
 
 Game *g_game = nullptr;
 
@@ -10,7 +11,7 @@ Game::Game() {
 		_tiles[i] = false;
 		_ghostTiles[i] = false;
 	}
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		_players[i].setType((PlayerType)i);
 		if (i != Pacman) {
 			_players[i].setPos(39);
@@ -23,14 +24,14 @@ Game::Game() {
 	_gameOver = false;
 }
 
-void Game::addConnection(PlayerType id, Connection *connection) {
-	Poco::FastMutex::ScopedLock lock(mutex);
-	_players[id].addConnection(connection);
+void Game::addConnection(Connection *connection) {
+	//Poco::FastMutex::ScopedLock lock(mutex);
+	_players[connection->_type].addConnection(connection);
 }
 
-void Game::removeConnection(PlayerType id, Connection *connection) {
-	Poco::FastMutex::ScopedLock lock(mutex);
-	_players[id].removeConnection(connection);
+void Game::removeConnection(Connection *connection) {
+	//Poco::FastMutex::ScopedLock lock(mutex);
+	_players[connection->_type].removeConnection(connection);
 }
 
 bool Game::isPowerPill(int pos) {
@@ -41,7 +42,7 @@ bool Game::isPowerPill(int pos) {
 }
 
 std::string Game::getGameState(PlayerType id) {
-	Poco::FastMutex::ScopedLock lock(mutex);
+	//Poco::FastMutex::ScopedLock lock(mutex);
 
 	checkTimes();
 
@@ -106,7 +107,7 @@ void Game::checkTimes() {
 }
 
 void Game::moveTo(PlayerType id, int pos) {
-	Poco::FastMutex::ScopedLock lock(mutex);
+	//Poco::FastMutex::ScopedLock lock(mutex);
 
 	checkTimes();
 
@@ -129,7 +130,7 @@ void Game::moveTo(PlayerType id, int pos) {
 	ss2 << "{\"type\":\"score\",\"score\":" << _score << "}";
 	std::string str = ss.str();
 	std::string str2 = ss2.str();
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		if (((id == Pacman && _players[i].getType() == Pacman) || id != Pacman) || _powerPillActive) {
 			_players[i].send(str);
 		} else {
@@ -139,7 +140,7 @@ void Game::moveTo(PlayerType id, int pos) {
 }
 
 void Game::power(int pos) {
-	Poco::FastMutex::ScopedLock lock(mutex);
+	//Poco::FastMutex::ScopedLock lock(mutex);
 
 	checkTimes();
 
@@ -163,7 +164,7 @@ void Game::power(int pos) {
 	ss << "{\"type\":\"power\",\"pos\":" << pos << ",\"score\":" << _score << ",\"time\":\"" << _pillTime << "\"}";
 
 	std::string str = ss.str();
-	for (int i = 0; i < 5; ++i) {
+	for (int i = 0; i < 6; ++i) {
 		_players[i].send(str);
 	}
 }

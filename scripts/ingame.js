@@ -5,9 +5,11 @@ window.onload = function() {
 	"use strict";
 	var role = window.location.hash.substring(1);
 	var ingame = new InGame(role);
-	websocket = new WebSocket("ws://csss.cs.sfu.ca:37645");
+	websocket = new WebSocket("ws://127.0.0.1:37645", "pacmacro");
 	websocket.onopen = function () { websocket.send("login;" + role); };
 	websocket.onmessage = function(data) { ingame.UpdateGame(data.data); };
+	websocket.onerror = function(data) { console.log(data); };
+	websocket.onclose = function(data) { ingame.onclose(); };
 };
 
 /**
@@ -15,8 +17,12 @@ window.onload = function() {
  */
 function StaticImage(img, x, y, w, h, ox, oy) {
 	"use strict";
-	this.draw = function(dx, dy, ctx) {
-		ctx.drawImage(img, x, y, w, h, Math.floor(dx) + ox, Math.floor(dy) + oy, w, h);
+	this.draw = function(dx, dy, ctx, scale) {
+		if (scale) {
+			ctx.drawImage(img, x, y, w, h, Math.floor(dx) + ox, Math.floor(dy) + oy, w/2, h/2);
+		} else {
+			ctx.drawImage(img, x, y, w, h, Math.floor(dx) + ox, Math.floor(dy) + oy, w, h);
+		}
 	};
 }
 
@@ -44,7 +50,8 @@ function InGame(role) {
 		backgroundColour = "rgb(0,0,0)",
 		backgroundPill = "rgb(255,0,0)",
 		lineColour = "rgb(0,0,128)",
-		foregroundColour = "rgb(255,255,255)";
+		foregroundColour = "rgb(255,255,255)",
+		interval;
 
 	image.src = "images/image.png";
 	images["Pacman"] = new StaticImage(image, 20, 0, 19, 20, 0, 0);
@@ -117,7 +124,16 @@ function InGame(role) {
 		context = canvas.getContext('2d');
 		canvas.addEventListener("click", onClick, false);
 		window.onkeydown = keyDown;
-		setInterval(updateScoreBoard, 100);
+		interval = setInterval(updateScoreBoard, 100);
+	};
+
+	this.onclose = function() {
+		clearInterval(interval);
+		var canvas = document.getElementById('canvas');
+		var context = canvas.getContext('2d');
+		context.fillStyle = foregroundColour;
+		context.fillText("Connection Lost", 300, 20);
+
 	};
 
 	function onClick(e) {
@@ -172,7 +188,30 @@ function InGame(role) {
 			return;
 		}
 		var o = tileToXY(tile);
-		image.draw(o.x, o.y, context);
+		image.draw(o.x, o.y, context, false);
+	}
+
+	function drawPlayer(tile, image, pot, i) {
+		if (tile < 0 || tile > 152) {
+			return;
+		}
+		var o = tileToXY(tile);
+		var scale = false;
+		if (pot != 1) {
+			scale = true;
+			if (i === 1) {
+				o.x += 8;
+			} else if (i == 2) {
+				o.y += 8;
+			} else if (i == 3) {
+				o.y += 8;
+				o.x += 8;
+			} else if (i === 4) {
+				o.y += 4;
+				o.x += 4;
+			}
+		}
+		image.draw(o.x, o.y, context, scale);
 	}
 
 	this.UpdateGame = function(data) {
@@ -270,7 +309,7 @@ function InGame(role) {
 	}
 
 	function draw() {
-		var i;
+		var i, x, pot = 0;
 		if (powerPillActive) {
 			context.fillStyle = backgroundPill;
 		} else {
@@ -303,7 +342,13 @@ function InGame(role) {
 			}
 		}
 		for (i = 0; i < players.length; i += 1) {
-			markTile(players[i]["pos"], images[players[i]["role"]]);
+			pot = 0;
+			for (x = 0; x < players.length; x += 1) {
+				if (players[i]["pos"] == players[x]["pos"]) {
+					pot += 1;
+				}
+			}
+			drawPlayer(players[i]["pos"], images[players[i]["role"]], pot, i);
 		}
 		context.font = "20px sans-serif";
 		context.fillStyle = foregroundColour;

@@ -2,14 +2,13 @@
 
 #include <string>
 #include "Player.hpp"
-#include <Poco/Mutex.h>
 
 class Game {
 public:
 	Game();
 	std::string getGameState(PlayerType id);
-	void addConnection(PlayerType id, Connection *connection);
-	void removeConnection(PlayerType id, Connection *connection);
+	void addConnection(Connection *connection);
+	void removeConnection(Connection *connection);
 	void moveTo(PlayerType id, int pos);
 	void power(int pos);
 private:
@@ -22,10 +21,8 @@ private:
 	bool _gameOver;
 	int _gameLength;
 	int _startTime, _pillTime;
-	Player _players[5];
+	Player _players[6];
 	int _score;
-
-	Poco::FastMutex mutex;
 };
 
 extern Game *g_game;
