@@ -5,7 +5,7 @@ window.onload = function() {
 	"use strict";
 	var role = window.location.hash.substring(1);
 	var ingame = new InGame(role);
-	websocket = new WebSocket("ws://127.0.0.1:37645", "pacmacro");
+	websocket = new WebSocket("ws://pacmacro.com:37645", "pacmacro");
 	websocket.onopen = function () { websocket.send("login;" + role); };
 	websocket.onmessage = function(data) { ingame.UpdateGame(data.data); };
 	websocket.onerror = function(data) { console.log(data); };
