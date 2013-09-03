@@ -99,10 +99,17 @@ int main(int argc, char **argv)
 	g_game = new Game();
 
 
+	lws_context_creation_info info;
+	memset(&info, 0, sizeof(info));
+	info.port = port;
+	info.iface = interface;
+	info.protocols = protocols;
+	info.extensions = libwebsocket_get_internal_extensions();
+	info.gid = -1;
+	info.uid = -1;
+	info.options = opts;
 
-	context = libwebsocket_create_context(port, interface, protocols,
-				libwebsocket_internal_extensions,
-				nullptr, nullptr, -1, -1, opts);
+	context = libwebsocket_create_context(&info);
 	if (context == NULL) {
 		fprintf(stderr, "libwebsocket init failed\n");
 		return -1;
