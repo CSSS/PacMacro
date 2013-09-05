@@ -20,7 +20,7 @@ private:
 	bool _ghostTiles[_numTiles];
 	bool _powerPillActive;
 	bool _gameOver;
-	int _gameLength;
+	int _gameLength, _pillLength;
 	int _startTime, _pillTime;
 	Player _players[InvalidType];
 	int _score;

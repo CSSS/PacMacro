@@ -22,6 +22,7 @@ void Game::restart() {
 		}
 	}
 	_gameLength = 30;
+	_pillLength = 120;
 	_startTime = (int)time(nullptr);
 	_score = 0;
 	_powerPillActive = false;
@@ -57,8 +58,10 @@ std::string Game::getGameState(PlayerType id) {
 	int t = (int)time(nullptr);
 
 	std::stringstream ss;
-	ss << "{\"type\":\"full\",\"gamelength\":" << _gameLength << ",\"timeLeft\":" << (_startTime + 30*60) - t
-	   << ",\"score\":" << _score << ",\"tiles\":[";
+	ss << "{\"type\":\"full\",\"gamelength\":" << _gameLength 
+		<< ",\"pilllength\":" << _pillLength
+		<< ",\"timeLeft\":" << (_startTime + 30*60) - t
+		<< ",\"score\":" << _score << ",\"tiles\":[";
 	bool first = true;
 	bool *tiles = nullptr;
 	if (id == Pacman) {
@@ -78,7 +81,7 @@ std::string Game::getGameState(PlayerType id) {
 	ss << "],\"powerPillActive\":" << _powerPillActive << "";
 
 	if (_powerPillActive) {
-		ss << ",\"powerPillLeft\":\"" << (_pillTime + 120) - t << "\"";
+		ss << ",\"powerPillLeft\":\"" << (_pillTime + _pillLength) - t << "\"";
 	}
 	ss << ",\"players\":[";
 	first = true;
@@ -105,7 +108,7 @@ std::string Game::getGameState(PlayerType id) {
 
 void Game::checkTimes() {
 	int t = (int)time(nullptr);
-	if (_powerPillActive && t - 120 > _pillTime) {
+	if (_powerPillActive && t - _pillLength > _pillTime) {
 		_powerPillActive = false;
 	}
 
