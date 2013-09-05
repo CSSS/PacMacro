@@ -249,18 +249,18 @@ function InGame(role) {
 		} else if (o["type"] === "full") {
 			players = o["players"];
 			tiles = o["tiles"];
+			gameLength = o["gamelength"];
+			pillLength = o["pilllength"];
 			var t = new Date().getTime() / 1000;
-			startTime = t-((30*60) - o["timeLeft"]);
+			startTime = t-((gameLength*60) - o["timeLeft"]);
 			powerPillActive = o["powerPillActive"];
 			if (powerPillActive) {
-				powerPillStart = t-(120 - o["powerPillLeft"]);
+				powerPillStart = t-(pillLength - o["powerPillLeft"]);
 			}
 			for (i = 0; i < players.length; i += 1) {
 				markTile(players[i]["pos"], images[players[i]["role"]]);
 			}
 			score = o["score"];
-			gameLength = o["gamelength"];
-			pillLength = o["pilllength"];
 			for (i = 0; i < players.length; i += 1) {
 				if (players[i]["role"] === role) {
 					pos = players[i]["pos"];
@@ -310,7 +310,7 @@ function InGame(role) {
 		context.fillText(timetext, 150, 20);
 
 		if (powerPillActive) {
-			delta = 120 - ((time / 1000) - powerPillStart);
+			delta = pillLength - ((time / 1000) - powerPillStart);
 			delta = Math.floor(delta);
 			if (delta < 0) {
 				powerPillActive = false;
@@ -392,8 +392,8 @@ function InGame(role) {
 	function drawControl() {
 		var content = document.getElementById('content');
 		var html = "";
-		html += "Game Length: <input type='text' name'gameLength' value='" + gameLength +"' /><br>";
-		html += "Pill Length: <input type='text' name'pillLength' value='"+pillLength+"' /><br>";
+		html += "Game Length: <input type='text' id='gameLength' value='" + gameLength +"' /><br>";
+		html += "Pill Length: <input type='text' id='pillLength' value='" + pillLength + "' /><br>";
 		html += "<button type='button' onclick='ingame.control(\"restart\")'>restart</button>";
 		content.innerHTML = html;
 	}
@@ -401,8 +401,8 @@ function InGame(role) {
 	this.control = function(type) {
 		var data = {};
 		data.type = "restart";
-		data.gameLength = 20;
-		data.pillLength = 120;
+		data.gameLength = Number(document.getElementById("gameLength").value);
+		data.pillLength = Number(document.getElementById("pillLength").value);
 		websocket.send(JSON.stringify(data));
 	}
 	
