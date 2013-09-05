@@ -1,10 +1,12 @@
 var websocket;
 var offset = 80;
+var ingame;
 
 window.onload = function() {
 	"use strict";
 	var role = window.location.hash.substring(1);
-	var ingame = new InGame(role);
+	role = role.toLowerCase();
+	ingame = new InGame(role);
 	websocket = new WebSocket("ws://pacmacro.com:37645", "pacmacro");
 	websocket.onopen = function () { websocket.send("login;" + role); };
 	websocket.onmessage = function(data) { ingame.UpdateGame(data.data); };
@@ -45,6 +47,7 @@ function InGame(role) {
 		powerPillStart,
 		score,
 		gameLength,
+		pillLength,
 		gameOver = false,
 		activated = false,
 		backgroundColour = "rgb(0,0,0)",
@@ -54,11 +57,11 @@ function InGame(role) {
 		interval;
 
 	image.src = "images/image.png";
-	images["Pacman"] = new StaticImage(image, 20, 0, 19, 20, 0, 0);
-	images["Inky"] = new StaticImage(image, 39, 0, 20, 20, 0, 0);
-	images["Blinky"] = new StaticImage(image, 20, 20, 20, 20, 0, 0);
-	images["Pinky"] = new StaticImage(image, 40, 20, 20, 20, 0, 0);
-	images["Clyde"] = new StaticImage(image, 0, 20, 20, 20, 0, 0);
+	images["pacman"] = new StaticImage(image, 20, 0, 19, 20, 0, 0);
+	images["inky"] = new StaticImage(image, 39, 0, 20, 20, 0, 0);
+	images["blinky"] = new StaticImage(image, 20, 20, 20, 20, 0, 0);
+	images["pinky"] = new StaticImage(image, 40, 20, 20, 20, 0, 0);
+	images["clyde"] = new StaticImage(image, 0, 20, 20, 20, 0, 0);
 	images.Eat = new StaticImage(image, 24, 40, 8, 8, 4, 4);
 	images.Pill = new StaticImage(image, 16, 40, 8, 8, 4, 4);
 	images.PowerPill = new StaticImage(image, 0, 40, 16, 8, 0, 4);
@@ -145,6 +148,9 @@ function InGame(role) {
 	}
 
 	function moveTo(x, y) {
+		if (role == "display" || role == "control") {
+			return;
+		}
 		var tile = xyToTile(x, y);
 		if (tile === -1) {
 			return;
@@ -157,7 +163,7 @@ function InGame(role) {
 	}
 
 	function eatPowerpill(pos) {
-		if (role === "Pacman" && isPowerpill(pos)) {
+		if (role === "pacman" && isPowerpill(pos)) {
 			websocket.send("power;" + pos);
 		}
 	}
@@ -224,7 +230,7 @@ function InGame(role) {
 			if (o["role"] === role) {
 				pos = o["pos"];
 			}
-			if (o["role"] === "Pacman" && !isPowerpill(o["pos"])) {
+			if (o["role"] === "pacman" && !isPowerpill(o["pos"])) {
 				tiles.push(o["pos"]);
 			}
 			markTile(o["pos"], images[o["role"]]);
@@ -248,6 +254,7 @@ function InGame(role) {
 			}
 			score = o["score"];
 			gameLength = o["gamelength"];
+			pillLength = o["pilllength"];
 			for (i = 0; i < players.length; i += 1) {
 				if (players[i]["role"] === role) {
 					pos = players[i]["pos"];
@@ -263,7 +270,7 @@ function InGame(role) {
 			powerPillActive = true;
 			powerPillStart = new Date().getTime() / 1000;
 			for (i = 0; i < players.length; i += 1) {
-				if (players[i]["role"] === "Pacman") {
+				if (players[i]["role"] === "pacman") {
 					players[i]["pos"] = o["pos"];
 				}
 			}
@@ -272,7 +279,7 @@ function InGame(role) {
 	};
 
 	function updateScoreBoard() {
-		if (gameOver) {
+		if (gameOver || role === "control") {
 			return;
 		}
 		var time = new Date().getTime(), timetext, delta;
@@ -309,6 +316,10 @@ function InGame(role) {
 	}
 
 	function draw() {
+		if (role === "control") {
+			drawControl();
+			return;
+		}
 		var i, x, pot = 0;
 		if (powerPillActive) {
 			context.fillStyle = backgroundPill;
@@ -368,9 +379,23 @@ function InGame(role) {
 		updateScoreBoard();
 
 
-		if (isPowerpill(pos) && role === "Pacman") {
+		if (isPowerpill(pos) && role === "pacman") {
 			context.fillText("Activate!", 490, 20);
 		}
 	}
+	function drawControl() {
+		var content = document.getElementById('content');
+		var html = "";
+		html += "Game Length: <input type='text' name'gameLength' value='" + gameLength +"' /><br>";
+		html += "Pill Length: <input type='text' name'pillLength' value='"+pillLength+"' /><br>";
+		html += "<button type='button' onclick='ingame.control(\"restart\")'>restart</button>";
+		content.innerHTML = html;
+	}
+
+	this.control = function(type) {
+		console.log(type);
+		websocket.send("restart");
+	}
+	
 }
 
