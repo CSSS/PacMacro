@@ -7,4 +7,4 @@ set(CMAKE_CXX_FLAGS "--std=c++0x -g")
 
 add_executable(pacmacro src/PacMacro.cpp src/Game.cpp src/Player.cpp)
 
-TARGET_LINK_LIBRARIES(pacmacro websockets)
+TARGET_LINK_LIBRARIES(pacmacro websockets jansson)

@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <libwebsockets.h>
+#include <jansson.h>
 
 #include "Game.hpp"
 #include "Connection.hpp"
@@ -28,10 +29,17 @@ callback_pacmacro(libwebsocket_context *context,
 
 
 	case LWS_CALLBACK_RECEIVE:
-		fprintf(stderr, "rx %d\n %s\n", (int)len, (const char *)in);
-		if (strncmp(recv, "login", 5) == 0) {
+		{
+		fprintf(stderr, "rx %d %s\n", (int)len, (const char *)in);
+		json_error_t error;
+		json_t *json = json_loads(recv, 0, &error);
+		if (json == nullptr) {
+			break;
+		}
+		const char *type = json_string_value(json_object_get(json, "type"));
+		if (strcmp(type, "login") == 0) {
 			char pos[32];
-			strcpy(pos, recv + 6);
+			strcpy(pos, json_string_value(json_object_get(json, "role")));
 			for (int i = 0; pos[i]; ++i) {
 				pos[i] = tolower(pos[i]);
 			}
@@ -62,14 +70,19 @@ callback_pacmacro(libwebsocket_context *context,
 			memcpy(p, data.c_str(), size);
 			libwebsocket_write(wsi, p, size, LWS_WRITE_TEXT);
 
-		} else if (strncmp(recv, "moveto", 6) == 0) {
-			int pos = atoi(recv+7);
-			g_game->moveTo(conn->_type, pos);
-		} else if (strncmp(recv, "power", 5) == 0) {
-			int pos = atoi(recv+6);
-			g_game->power(pos);
-		} else if (strcmp(recv, "restart") == 0) {
+		} else if (strcmp(type, "moveto") == 0) {
+			int tile = json_integer_value(json_object_get(json, "tile"));
+			g_game->moveTo(conn->_type, tile);
+		} else if (strcmp(type, "power") == 0) {
+			int tile = json_integer_value(json_object_get(json, "tile"));
+			g_game->power(tile);
+		} else if (strcmp(type, "restart") == 0) {
+			int gameLength = json_integer_value(json_object_get(json, "gameLength"));
+			int pillLength = json_integer_value(json_object_get(json, "pillLength"));
+			g_game->setGameLength(gameLength);
+			g_game->setPillLength(pillLength);
 			g_game->restart();
+		}
 		}
 		break;
 	case LWS_CALLBACK_CLOSED:

@@ -7,6 +7,8 @@
 Game *g_game = nullptr;
 
 Game::Game() {
+	_gameLength = 30;
+	_pillLength = 120;
 	restart();
 }
 
@@ -21,8 +23,6 @@ void Game::restart() {
 			_players[i].setPos(39);
 		}
 	}
-	_gameLength = 30;
-	_pillLength = 120;
 	_startTime = (int)time(nullptr);
 	_score = 0;
 	_powerPillActive = false;
@@ -60,7 +60,7 @@ std::string Game::getGameState(PlayerType id) {
 	std::stringstream ss;
 	ss << "{\"type\":\"full\",\"gamelength\":" << _gameLength 
 		<< ",\"pilllength\":" << _pillLength
-		<< ",\"timeLeft\":" << (_startTime + 30*60) - t
+		<< ",\"timeLeft\":" << (_startTime + _gameLength*60) - t
 		<< ",\"score\":" << _score << ",\"tiles\":[";
 	bool first = true;
 	bool *tiles = nullptr;

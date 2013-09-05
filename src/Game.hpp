@@ -12,6 +12,8 @@ public:
 	void moveTo(PlayerType id, int pos);
 	void power(int pos);
 	void restart();
+	void setGameLength(int length) { _gameLength = length; };
+	void setPillLength(int length) { _pillLength = length; };
 private:
 	void checkTimes();
 	bool isPowerPill(int pos);

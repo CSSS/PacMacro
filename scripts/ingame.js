@@ -8,7 +8,7 @@ window.onload = function() {
 	role = role.toLowerCase();
 	ingame = new InGame(role);
 	websocket = new WebSocket("ws://pacmacro.com:37645", "pacmacro");
-	websocket.onopen = function () { websocket.send("login;" + role); };
+	websocket.onopen = function () { websocket.send("{\"type\":\"login\",\"role\":\"" + role + "\"}"); };
 	websocket.onmessage = function(data) { ingame.UpdateGame(data.data); };
 	websocket.onerror = function(data) { console.log(data); };
 	websocket.onclose = function(data) { ingame.onclose(); };
@@ -158,13 +158,19 @@ function InGame(role) {
 
 		if (pos === -1 || isBeside(tile, pos)) {
 			pos = tile;
-			websocket.send("moveto;" + tile);
+			var data = {};
+			data.type = "moveto";
+			data.tile = tile;
+			websocket.send(JSON.stringify(data));
 		}
 	}
 
 	function eatPowerpill(pos) {
 		if (role === "pacman" && isPowerpill(pos)) {
-			websocket.send("power;" + pos);
+			var data = {};
+			data.type = "power";
+			data.tile = pos;
+			websocket.send(JSON.stringify(data));
 		}
 	}
 
@@ -393,8 +399,11 @@ function InGame(role) {
 	}
 
 	this.control = function(type) {
-		console.log(type);
-		websocket.send("restart");
+		var data = {};
+		data.type = "restart";
+		data.gameLength = 20;
+		data.pillLength = 120;
+		websocket.send(JSON.stringify(data));
 	}
 	
 }
