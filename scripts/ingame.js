@@ -47,6 +47,7 @@ function InGame(role) {
 		powerPillStart,
 		score,
 		gameLength,
+		pillLength,
 		gameOver = false,
 		activated = false,
 		backgroundColour = "rgb(0,0,0)",
@@ -253,6 +254,7 @@ function InGame(role) {
 			}
 			score = o["score"];
 			gameLength = o["gamelength"];
+			pillLength = o["pilllength"];
 			for (i = 0; i < players.length; i += 1) {
 				if (players[i]["role"] === role) {
 					pos = players[i]["pos"];
@@ -383,7 +385,11 @@ function InGame(role) {
 	}
 	function drawControl() {
 		var content = document.getElementById('content');
-		content.innerHTML = "<button type='button' onclick='ingame.control(\"restart\")'>restart</button>";
+		var html = "";
+		html += "Game Length: <input type='text' name'gameLength' value='" + gameLength +"' /><br>";
+		html += "Pill Length: <input type='text' name'pillLength' value='"+pillLength+"' /><br>";
+		html += "<button type='button' onclick='ingame.control(\"restart\")'>restart</button>";
+		content.innerHTML = html;
 	}
 
 	this.control = function(type) {
