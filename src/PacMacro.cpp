@@ -30,18 +30,27 @@ callback_pacmacro(libwebsocket_context *context,
 	case LWS_CALLBACK_RECEIVE:
 		fprintf(stderr, "rx %d\n %s\n", (int)len, (const char *)in);
 		if (strncmp(recv, "login", 5) == 0) {
-			if (strncmp(recv+6, "Pacman", 6) == 0) {
+			char pos[32];
+			strcpy(pos, recv + 6);
+			for (int i = 0; pos[i]; ++i) {
+				pos[i] = tolower(pos[i]);
+			}
+			if (strcmp(pos, "pacman") == 0) {
 				conn->_type = Pacman;
-			} else if (strncmp(recv+6, "Inky", 4) == 0) {
+			} else if (strcmp(pos, "inky") == 0) {
 				conn->_type = Inky;
-			} else if (strncmp(recv+6, "Pinky", 5) == 0) {
+			} else if (strcmp(pos, "pinky") == 0) {
 				conn->_type = Pinky;
-			} else if (strncmp(recv+6, "Blinky", 6) == 0) {
+			} else if (strcmp(pos, "blinky") == 0) {
 				conn->_type = Blinky;
-			} else if (strncmp(recv+6, "Clyde", 5) == 0) {
+			} else if (strcmp(pos, "clyde") == 0) {
 				conn->_type = Clyde;
-			} else {
+			} else if (strcmp(pos, "display") == 0) {
 				conn->_type = Display;
+			} else if (strcmp(pos, "control") == 0) {
+				conn->_type = Control;
+			} else {
+				break;
 			}
 			conn->wsi = wsi;
 			g_game->addConnection(conn);

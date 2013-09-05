@@ -9,6 +9,7 @@ enum PlayerType {
 	Pinky,
 	Clyde,
 	Display,
+	Control,
 	InvalidType
 };
 
