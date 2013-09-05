@@ -12,19 +12,19 @@ std::vector<Player *> players;
 std::ostream &operator<<(std::ostream &os, PlayerType const&type) {
 	switch (type) {
 	case Pacman:
-		os << "Pacman";
+		os << "pacman";
 		break;
 	case Inky:
-		os << "Inky";
+		os << "inky";
 		break;
 	case Blinky:
-		os << "Blinky";
+		os << "blinky";
 		break;
 	case Pinky:
-		os << "Pinky";
+		os << "pinky";
 		break;
 	case Clyde:
-		os << "Clyde";
+		os << "clyde";
 		break;
 	}
 	return os;

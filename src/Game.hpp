@@ -11,6 +11,7 @@ public:
 	void removeConnection(Connection *connection);
 	void moveTo(PlayerType id, int pos);
 	void power(int pos);
+	void restart();
 private:
 	void checkTimes();
 	bool isPowerPill(int pos);
@@ -21,7 +22,7 @@ private:
 	bool _gameOver;
 	int _gameLength;
 	int _startTime, _pillTime;
-	Player _players[6];
+	Player _players[InvalidType];
 	int _score;
 };
 

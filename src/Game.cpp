@@ -7,6 +7,10 @@
 Game *g_game = nullptr;
 
 Game::Game() {
+	restart();
+}
+
+void Game::restart() {
 	for (int i = 0; i < _numTiles; ++i) {
 		_tiles[i] = false;
 		_ghostTiles[i] = false;
@@ -22,6 +26,10 @@ Game::Game() {
 	_score = 0;
 	_powerPillActive = false;
 	_gameOver = false;
+	for (int i = 0; i < 6; ++i) {
+		std::string str = getGameState((PlayerType)i);
+		_players[i].send(str);
+	}
 }
 
 void Game::addConnection(Connection *connection) {

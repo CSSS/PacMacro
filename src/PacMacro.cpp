@@ -68,6 +68,8 @@ callback_pacmacro(libwebsocket_context *context,
 		} else if (strncmp(recv, "power", 5) == 0) {
 			int pos = atoi(recv+6);
 			g_game->power(pos);
+		} else if (strcmp(recv, "restart") == 0) {
+			g_game->restart();
 		}
 		break;
 	case LWS_CALLBACK_CLOSED:
