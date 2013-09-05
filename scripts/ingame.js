@@ -147,6 +147,9 @@ function InGame(role) {
 	}
 
 	function moveTo(x, y) {
+		if (role == "display" || role == "control") {
+			return;
+		}
 		var tile = xyToTile(x, y);
 		if (tile === -1) {
 			return;
