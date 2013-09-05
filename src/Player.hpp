@@ -13,6 +13,7 @@ enum PlayerType {
 	InvalidType
 };
 
+PlayerType getPlayerType(const char *);
 std::ostream &operator<<(std::ostream &os, PlayerType const&type);
 
 class Connection;

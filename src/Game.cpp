@@ -36,6 +36,7 @@ void Game::restart() {
 void Game::addConnection(Connection *connection) {
 	//Poco::FastMutex::ScopedLock lock(mutex);
 	_players[connection->_type].addConnection(connection);
+	_connections.push_back(connection);
 }
 
 void Game::removeConnection(Connection *connection) {
@@ -178,4 +179,20 @@ void Game::power(int pos) {
 	for (int i = 0; i < 6; ++i) {
 		_players[i].send(str);
 	}
+}
+
+void Game::setConnType(int conn, PlayerType type) {
+	for (Connection *x : _connections) {
+		if (x->id == conn) {
+			_players[x->_type].removeConnection(x);
+			x->_type = type;
+			std::stringstream ss;
+			ss <<"{\"type\":\"changetype\",\"newtype\":\"" << type << "\"}"; 
+			x->send(ss.str().c_str());
+			_players[x->_type].addConnection(x);
+			x->send(getGameState(type));
+			break;
+		}
+	}
+	
 }

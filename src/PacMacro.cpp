@@ -7,11 +7,11 @@
 #include "Game.hpp"
 #include "Connection.hpp"
 
-int nextid = 0;
-
 enum protocols {
 	PROTOCOL_PACMACRO,
 };
+
+static int nextid = 0;
 
 static int
 callback_pacmacro(libwebsocket_context *context,
@@ -25,6 +25,8 @@ callback_pacmacro(libwebsocket_context *context,
 	switch (reason) {
 
 	case LWS_CALLBACK_ESTABLISHED:
+		conn->id = nextid;
+		++nextid;
 		fprintf(stderr, "New Connection\n");
 		break;
 
@@ -39,26 +41,8 @@ callback_pacmacro(libwebsocket_context *context,
 		}
 		const char *type = json_string_value(json_object_get(json, "type"));
 		if (strcmp(type, "login") == 0) {
-			char pos[32];
-			strcpy(pos, json_string_value(json_object_get(json, "role")));
-			for (int i = 0; pos[i]; ++i) {
-				pos[i] = tolower(pos[i]);
-			}
-			if (strcmp(pos, "pacman") == 0) {
-				conn->_type = Pacman;
-			} else if (strcmp(pos, "inky") == 0) {
-				conn->_type = Inky;
-			} else if (strcmp(pos, "pinky") == 0) {
-				conn->_type = Pinky;
-			} else if (strcmp(pos, "blinky") == 0) {
-				conn->_type = Blinky;
-			} else if (strcmp(pos, "clyde") == 0) {
-				conn->_type = Clyde;
-			} else if (strcmp(pos, "display") == 0) {
-				conn->_type = Display;
-			} else if (strcmp(pos, "control") == 0) {
-				conn->_type = Control;
-			} else {
+			PlayerType type = getPlayerType(json_string_value(json_object_get(json, "role")));
+			if (type == InvalidType) {
 				break;
 			}
 			conn->wsi = wsi;
@@ -80,7 +64,16 @@ callback_pacmacro(libwebsocket_context *context,
 			g_game->restart();
 		} else if (strcmp(type, "getconn") == 0) {
 			
+		} else if (strcmp(type, "setconn") == 0) {
+			int conn = json_integer_value(json_object_get(json, "conn"));
+			const char *type = json_string_value(json_object_get(json, "newtype"));
+			PlayerType t = getPlayerType(type);
+			if (t == InvalidType) {
+				break;
+			}
+			g_game->setConnType(conn, t);
 		}
+		
 		}
 		break;
 	case LWS_CALLBACK_CLOSED:

@@ -280,6 +280,9 @@ function InGame(role) {
 					players[i]["pos"] = o["pos"];
 				}
 			}
+		} else if (o["type"] == "changetype") {
+			role = o["newtype"];
+			window.location.hash = o["newtype"];
 		}
 		draw();
 	};

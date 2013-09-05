@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 #include "Player.hpp"
 
 class Game {
@@ -14,6 +15,7 @@ public:
 	void restart();
 	void setGameLength(int length) { _gameLength = length; };
 	void setPillLength(int length) { _pillLength = length; };
+	void setConnType(int conn, PlayerType type);
 private:
 	void checkTimes();
 	bool isPowerPill(int pos);
@@ -26,6 +28,7 @@ private:
 	int _startTime, _pillTime;
 	Player _players[InvalidType];
 	int _score;
+	std::vector<Connection *> _connections;
 };
 
 extern Game *g_game;
