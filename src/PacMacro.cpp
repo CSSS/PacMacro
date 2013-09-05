@@ -7,6 +7,7 @@
 #include "Game.hpp"
 #include "Connection.hpp"
 
+int nextid = 0;
 
 enum protocols {
 	PROTOCOL_PACMACRO,
@@ -63,12 +64,7 @@ callback_pacmacro(libwebsocket_context *context,
 			conn->wsi = wsi;
 			g_game->addConnection(conn);
 			const std::string &data = g_game->getGameState(conn->_type);
-
-			unsigned char buf[LWS_SEND_BUFFER_PRE_PADDING + 512 + LWS_SEND_BUFFER_POST_PADDING];
-			unsigned char *p = &buf[LWS_SEND_BUFFER_PRE_PADDING];
-			size_t size = data.size();
-			memcpy(p, data.c_str(), size);
-			libwebsocket_write(wsi, p, size, LWS_WRITE_TEXT);
+			conn->send(data);
 
 		} else if (strcmp(type, "moveto") == 0) {
 			int tile = json_integer_value(json_object_get(json, "tile"));
@@ -82,6 +78,8 @@ callback_pacmacro(libwebsocket_context *context,
 			g_game->setGameLength(gameLength);
 			g_game->setPillLength(pillLength);
 			g_game->restart();
+		} else if (strcmp(type, "getconn") == 0) {
+			
 		}
 		}
 		break;
