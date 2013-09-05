@@ -5,6 +5,10 @@ var ingame;
 window.onload = function() {
 	"use strict";
 	var role = window.location.hash.substring(1);
+	if (role == "") {
+		role = "display";
+		window.location.hash = role;
+	}
 	role = role.toLowerCase();
 	ingame = new InGame(role);
 	websocket = new WebSocket("ws://pacmacro.com:37645", "pacmacro");
@@ -54,7 +58,8 @@ function InGame(role) {
 		backgroundPill = "rgb(255,0,0)",
 		lineColour = "rgb(0,0,128)",
 		foregroundColour = "rgb(255,255,255)",
-		interval;
+		interval,
+		connections = [];
 
 	image.src = "images/image.png";
 	images["pacman"] = new StaticImage(image, 20, 0, 19, 20, 0, 0);
@@ -283,6 +288,8 @@ function InGame(role) {
 		} else if (o["type"] == "changetype") {
 			role = o["newtype"];
 			window.location.hash = o["newtype"];
+		} else if (o["type"] == "connlist") {
+			connections = o["arr"];
 		}
 		draw();
 	};
@@ -392,21 +399,59 @@ function InGame(role) {
 			context.fillText("Activate!", 490, 20);
 		}
 	}
+
+	this.selectType = function(type) {
+		console.log(type);
+		var content = document.getElementById('select' + type);
+		var data = {};
+		data.type = "setconn";
+		data.conn = type;
+		data.newtype = content.value;
+		websocket.send(JSON.stringify(data));
+	}
+
+	function typeSelect(conn) {
+		var html = "";
+		var types = ["pacman", "inky", "blinky", "pinky", "clyde", "display", "control"];
+		html += "<select id='select"+conn.id+"' onchange='ingame.selectType("+conn.id+");'>";
+		var i;
+		for (i = 0; i < types.length; ++i) {
+			html += "<option value='"+types[i]+"'";
+			if (conn.type == types[i]) {
+				html += " selected";
+			}
+			html += ">"+types[i]+"</option>";
+		}
+		html += "</select>";
+		return html;
+	}
 	function drawControl() {
 		var content = document.getElementById('content');
 		var html = "";
 		html += "Game Length: <input type='text' id='gameLength' value='" + gameLength +"' /><br>";
 		html += "Pill Length: <input type='text' id='pillLength' value='" + pillLength + "' /><br>";
-		html += "<button type='button' onclick='ingame.control(\"restart\")'>restart</button>";
+		html += "<button type='button' onclick='ingame.control(\"restart\")'>restart</button><br>";
+		html += "<br><br><br><br><br><br><br>";
+		html += "<button type='button' onclick='ingame.control(\"refresh\")'>refresh</button><br>";
+		var i = 0;
+		for (i = 0; i < connections.length; ++i) {
+			html += typeSelect(connections[i]);
+		}
 		content.innerHTML = html;
 	}
 
 	this.control = function(type) {
-		var data = {};
-		data.type = "restart";
-		data.gameLength = Number(document.getElementById("gameLength").value);
-		data.pillLength = Number(document.getElementById("pillLength").value);
-		websocket.send(JSON.stringify(data));
+		if (type == "restart") {
+			var data = {};
+			data.type = "restart";
+			data.gameLength = Number(document.getElementById("gameLength").value);
+			data.pillLength = Number(document.getElementById("pillLength").value);
+			websocket.send(JSON.stringify(data));
+		} else if (type == "refresh") {
+			var data = {};
+			data.type = "getconn";
+			websocket.send(JSON.stringify(data));
+		}
 	}
 	
 }

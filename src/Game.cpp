@@ -1,5 +1,6 @@
 #include <sstream>
 #include <ctime>
+#include <algorithm>
 #include "Game.hpp"
 #include "Player.hpp"
 #include "Connection.hpp"
@@ -42,6 +43,20 @@ void Game::addConnection(Connection *connection) {
 void Game::removeConnection(Connection *connection) {
 	//Poco::FastMutex::ScopedLock lock(mutex);
 	_players[connection->_type].removeConnection(connection);
+	auto it = std::remove(_connections.begin(), _connections.end(), connection);
+	_connections.erase(it);
+}
+
+void Game::sendConnList(Connection *connection) {
+	std::stringstream ss;
+	ss << "{\"type\":\"connlist\", \"arr\":[";
+	bool first = true;
+	for (Connection *x : _connections) {
+		if (!first) { ss << ",";} first = false; 
+		ss << "{\"id\":\"" << x->id << "\", \"type\":\"" << x->_type << "\"}";
+	}
+	ss << "]}";
+	connection->send(ss.str());
 }
 
 bool Game::isPowerPill(int pos) {

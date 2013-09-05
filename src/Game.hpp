@@ -10,6 +10,7 @@ public:
 	std::string getGameState(PlayerType id);
 	void addConnection(Connection *connection);
 	void removeConnection(Connection *connection);
+	void sendConnList(Connection *connection);
 	void moveTo(PlayerType id, int pos);
 	void power(int pos);
 	void restart();

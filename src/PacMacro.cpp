@@ -46,6 +46,7 @@ callback_pacmacro(libwebsocket_context *context,
 				break;
 			}
 			conn->wsi = wsi;
+			conn->_type = type;
 			g_game->addConnection(conn);
 			const std::string &data = g_game->getGameState(conn->_type);
 			conn->send(data);
@@ -63,7 +64,7 @@ callback_pacmacro(libwebsocket_context *context,
 			g_game->setPillLength(pillLength);
 			g_game->restart();
 		} else if (strcmp(type, "getconn") == 0) {
-			
+			g_game->sendConnList(conn);
 		} else if (strcmp(type, "setconn") == 0) {
 			int conn = json_integer_value(json_object_get(json, "conn"));
 			const char *type = json_string_value(json_object_get(json, "newtype"));
