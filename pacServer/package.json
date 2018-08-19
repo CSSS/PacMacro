@@ -12,6 +12,6 @@
   "dependencies": {
     "express": "^4.16.3",
     "http": "0.0.0",
-    "serve-index": "^1.9.1"
+    "node-dev": "^3.1.3"
   }
 }
