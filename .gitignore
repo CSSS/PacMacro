@@ -5,3 +5,4 @@ index.yaml
 *.opensdf
 Release
 Debug
+node_modules/
