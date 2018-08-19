@@ -23,9 +23,18 @@ app.use('/', function(req,res,next){
 
 app.use('/', express.static('../', options));
 
+app.post('/admin', (req, res)=>{
+    if(req.body.pass === process.env.PASSWORD){
+        res.send(true);
+    }
+    else{
+        res.send(false);
+    }
+});
+
 app.all('*', function(req, res){
   res.status(404);
-  res.send('lol nope');
+  res.sendFile(__dirname + '/error.html');
 });
 
 http.createServer(app).listen(port);

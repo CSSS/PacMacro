@@ -333,8 +333,23 @@ function InGame(role) {
 
 	function draw() {
 		if (role === "control") {
-			drawControl();
-			return;
+			//verify with a diaglog
+			var pass = prompt("Enter password");
+			$.ajax({
+				method: 'post',
+				url: './admin',
+				data: 'pass=' + pass,
+				success: (access) => {
+						if(access) {
+							drawControl();
+							return;
+						}
+						else {
+							window.location.hash = 'display';
+							location.reload();
+						}
+				}
+			});
 		}
 		var i, x, pot = 0;
 		if (powerPillActive) {
