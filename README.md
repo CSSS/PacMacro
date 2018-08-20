@@ -26,7 +26,7 @@ During the make process if errors about the libwebsockets occur run the followin
 `sudo /sbin/ldconfig -v`
 
 ## Server setup
-[Server readme](pacServer/README.md)
+[Server readme](pacServer/)
 
 ## Running PacMacro
 
