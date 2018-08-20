@@ -3,7 +3,9 @@
 ## Dependencies
 * nodejs
 * npm
-
+* pm2 
+    * Installed via npm but use the global flag: --global
+  
 For everything else run `npm install` in this directory and the package.json file will take care of everything.
 
 ## Setting up the environment
