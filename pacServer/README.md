@@ -1,7 +1,10 @@
 # Server setup
 
 ## Dependencies
-Run `npm install` in this directory and the package.json file will take care of everything.
+* nodejs
+* npm
+
+For everything else run `npm install` in this directory and the package.json file will take care of everything.
 
 ## Setting up the environment
 * Choose a password needed to access the control panel and run: 
