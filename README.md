@@ -4,7 +4,7 @@
   
 This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library.
 
-Commands you need to go through first to before trying to build the game
+## Commands you need to go through first to before trying to build the game
 ```shell
 apt-get install -y git gcc g++ make cmake zlib1g-dev libssl-dev automake libtool
 wget http://www.digip.org/jansson/releases/jansson-2.11.tar.bz2
@@ -32,13 +32,21 @@ npm install -g pm2
 sudo apt-get install -y npm
 ```
 
-Commands to Built the Program
+## Commands to Built the Program
 ```shell
 enter commands here
 ```
 
-Potential library needed after program is built
+## Potential library needed after program is built
 
-``shell
+```shell
 sudo apt-get install -y libwebsockets-dev
-``
+```
+
+## Links that could be useful  
+ - https://github.com/creationix/nvm#install-script
+ - https://askubuntu.com/questions/849270/how-can-i-install-a-tar-xz-file-from-nodejs-org
+ - https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04
+ - https://nodejs.org/en/download/current/
+ - https://github.com/warmcat/libwebsockets/tree/v1.22-chrome26-firefox18
+ - https://jansson.readthedocs.io/en/2.11/gettingstarted.html#compiling-and-installing-jansson
