@@ -2,6 +2,13 @@
 
 ![Captain America PSA](captain_pacmacro_psa.jpg)  
   
+## Table of Contents
+ - [Necessary Commands before building the game]()
+ - [Commands to Build the Program]()
+ - [Potential Library to add after Program built]()
+ - [Potentially Useful Link]()
+
+
 This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library.
 
 ## Commands you need to go through first to before trying to build the game
