@@ -7,6 +7,11 @@
  - [Commands to Build the Program](#commands-to-built-the-program)
  - [Potential Library to add after Program built](#potential-library-needed-after-program-is-built)
  - [Potentially Useful Link](#links-that-could-be-useful)
+ - [Links to Version 2](https://github.com/pacmacro)  
+   - [Server-Code](https://github.com/pacmacro/pm-server)
+   - [Android App Repo](https://github.com/pacmacro/pm-android)
+   - [iOS App Repo](https://github.com/pacmacro/pm-iOS)
+   - [PacMacro Specification](https://github.com/pacmacro/pm-specification)
 
 
 This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library.
