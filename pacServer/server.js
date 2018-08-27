@@ -34,7 +34,7 @@ app.post('/admin', (req, res)=>{
 
 app.all('*', function(req, res){
   res.status(404);
-  res.sendFile(__dirname + '/error.html');
+  res.sendFile(__dirname + '../error.html');
 });
 
 http.createServer(app).listen(port);
