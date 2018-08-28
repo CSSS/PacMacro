@@ -50,7 +50,7 @@ make install
 ```
    2.3. To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
 
-### 3. Building PacMacro
+## Building PacMacro
 
 3.1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
 ```shell
