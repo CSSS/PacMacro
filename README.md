@@ -96,6 +96,15 @@ chmod 755 /etc/authbind/byport/80
  - Choose a password needed to access the control panel and run: `export PASSWORD='password'` Where password is your chosen password.
  - By default the server will use `port: 80`. If you want to use another port, do so by running the following: `export PORT=port` Where `port` is your chosen port.
 
+3.7 Running the server
+>Its recommended that you read the basics about [pm2](http://pm2.keymetrics.io/). Home page is enough for basic usage.
+
+```shell
+pm2 start server.js
+```
+
+3.8 Running PacMacro
+`./pacmacro &`: This start the app and put it into the background.
 
 ## Links that could be useful  
  - https://github.com/creationix/nvm#install-script
