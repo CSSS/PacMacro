@@ -24,8 +24,8 @@ This game was built on Ubuntu 16.04 due to a dependency that exists on an old we
 >Recommend to run `apt-get update` before anything else
 
 ### 1. Installing jansson-2.11
+>Adapted from [Compiling and Installing Jansson](https://jansson.readthedocs.io/en/2.11/gettingstarted.html#compiling-and-installing-jansson)
 ```shell
-#Adapted from [Compiling and Installing Jansson](https://jansson.readthedocs.io/en/2.11/gettingstarted.html#compiling-and-installing-jansson)
 apt-get install -y make gcc
 wget http://www.digip.org/jansson/releases/jansson-2.11.tar.bz2
 bunzip2 -c jansson-2.11.tar.bz2 | tar xf -
@@ -64,8 +64,8 @@ apt-get install -y git g++ cmake
 ## Building and Setting up PacMacro
 
 ### 1. Create PacMacro user and allowing PacMacro user to log in with pubkeys
+>Adapted from [this StackOverFlow Answer](https://unix.stackexchange.com/a/210232)
 ```shell
-#Adapted from [this StackOverFlow Answer](https://unix.stackexchange.com/a/210232)
 useradd -m -d /home/pacmacro -s /bin/bash pacmacro
 mkdir /home/pacmacro/.ssh
 touch /home/pacmacro/.ssh/authorized_keys
@@ -88,16 +88,19 @@ make
 ### 3. Setting up Nodejs and NPM
 ```shell
 apt-get update
-
-Adapted from [How To Install Node.js on Ubuntu 16.04: How To Install Using NVM](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04#how-to-install-using-nvm)
+```
+>Adapted from [How To Install Node.js on Ubuntu 16.04: How To Install Using NVM](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04#how-to-install-using-nvm)
+```shell
 apt-get install -y build-essential libssl-dev
 su - pacmacro
 curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash -
 source .profile
 nvm install 10.9.0
 exit
+```
 
-Acquired from [Installing Node.js via package manager on Debian and Ubuntu based Linux distributions](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
+>Acquired from [Installing Node.js via package manager on Debian and Ubuntu based Linux distributions](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
+```shell
 #curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 #apt-get install -y nodejs
 ```
