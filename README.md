@@ -18,7 +18,7 @@ This game was built on Ubuntu 16.04 due to a dependency that exists on an old we
 
 ## Commands you need to go through first to before trying to build the game
 
-Recommend to run `apt-get update` before anything else
+>Recommend to run `apt-get update` before anything else
 
 ### 1. Installing jansson-2.11
 ```shell
