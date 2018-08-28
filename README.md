@@ -4,7 +4,7 @@
   
 ## Table of Contents
  - [Necessary Commands before building the game](#commands-you-need-to-go-through-first-to-before-trying-to-build-the-game)
- - [Commands to Build the Program](#commands-to-built-the-program)
+ - [Building PacMacro](#building-pacmacro)
  - [Potential Library to add after Program built](#potential-library-needed-after-program-is-built)
  - [Potentially Useful Link](#links-that-could-be-useful)
  - [Links to Version 2](https://github.com/pacmacro)  
@@ -50,7 +50,7 @@ make install
 ```
    2.3. To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
 
-## Building PacMacro
+## Building and Setting up PacMacro
 
 3.1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
 ```shell
@@ -96,14 +96,16 @@ chmod 755 /etc/authbind/byport/80
  - Choose a password needed to access the control panel and run: `export PASSWORD='password'` Where password is your chosen password.
  - By default the server will use `port: 80`. If you want to use another port, do so by running the following: `export PORT=port` Where `port` is your chosen port.
 
-3.7 Running the server
+## Running PacMacro
+
+1. Running the Server
 >Its recommended that you read the basics about [pm2](http://pm2.keymetrics.io/). Home page is enough for basic usage.
 
 ```shell
 pm2 start server.js
 ```
 
-3.8 Running PacMacro
+2. Running PacMacro
 ```shell
 ./pacmacro &
 ```
