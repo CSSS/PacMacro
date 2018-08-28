@@ -20,7 +20,7 @@ This game was built on Ubuntu 16.04 due to a dependency that exists on an old we
 
 Recommend to run `apt-get update` before anything else
 
-1.. jansson-2.11
+1. Installing jansson-2.11
 ```shell
 wget http://www.digip.org/jansson/releases/jansson-2.11.tar.bz2
 bunzip2 -c jansson-2.11.tar.bz2 | tar xf -
