@@ -19,6 +19,7 @@
 
 This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library.
 
+Unless otherwise specified, all commands are run as root  
 ## 1. Necessary Commands before building the game
 
 >Recommend to run `apt-get update` before anything else
