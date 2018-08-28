@@ -3,17 +3,17 @@
 ![Captain America PSA](captain_pacmacro_psa.jpg)  
   
 ## Table of Contents
- - [1. Necessary Commands before building the game](#necessary-commands-before-building-the-game)
-   - [1.1 Installing jansson-2.11](#1-installing-jansson-211)
-   - [1.2 Installing websockets](#2-installing-libwebsockets)
-   - [1.3 Installing some other commands](#3-installing-some-other-commands)
- - [2. Building and Setting up PacMacro](#building-and-setting-up-pacmacro)
-   - [2.1 Create PacMacro User and allow login via publickeys only](#1-create-pacmacro-user-and-allowing-pacmacro-user-to-log-in-with-pubkeys)
-   - [2.2 Building PacMacro](#2-building-pacmacro)
-   - [2.3 Setting up Nodejs and NPM](#3-setting-up-nodejs-and-npm)
-   - [2.4 Installing pm2 and allowing it to run on port 80/433 without root](#4-installing-pm2-and-allowing-it-to-run-on-port-80433-without-root)
-   - [2.5 Setting up the Environment](#5-setting-up-the-environment)
- - [3. Running PacMacro](#running-pacmacro)
+ - [1. Necessary Commands before building the game](#1-necessary-commands-before-building-the-game)
+   - [1.1 Installing jansson-2.11](#11-installing-jansson-211)
+   - [1.2 Installing websockets](#12-installing-libwebsockets)
+   - [1.3 Installing some other commands](#13-installing-some-other-commands)
+ - [2. Building and Setting up PacMacro](#2-building-and-setting-up-pacmacro)
+   - [2.1 Create PacMacro User and allow login via publickeys only](#21-create-pacmacro-user-and-allowing-pacmacro-user-to-log-in-with-pubkeys)
+   - [2.2 Building PacMacro](#22-building-pacmacro)
+   - [2.3 Setting up Nodejs and NPM](#23-setting-up-nodejs-and-npm)
+   - [2.4 Installing pm2 and allowing it to run on port 80/433 without root](#24-installing-pm2-and-allowing-it-to-run-on-port-80433-without-root)
+   - [2.5 Setting up the Environment](#25-setting-up-the-environment)
+ - [3. Running PacMacro](#3-running-pacmacro)
  - [Links to Version 2](https://github.com/pacmacro)  
 
 
