@@ -1,5 +1,6 @@
 # PacMacro Setup
-
+![Ha Ha Ha](images/wellGetReady.jpg)
+Well Good Luck!!!
 ## Dependencies
 * [jansson2.11](http://www.digip.org/jansson/releases/jansson-2.11.tar.gz)
     * Follow the compiling and buliding [instructions](https://jansson.readthedocs.io/en/2.11/gettingstarted.html#compiling-and-installing-jansson)
