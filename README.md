@@ -4,8 +4,11 @@
   
 ## Table of Contents
  - [Necessary Commands before building the game](#commands-you-need-to-go-through-first-to-before-trying-to-build-the-game)
+   - [1. Installing jansson-2.11](#1-installing-jansson-211)
+   - [2. Installing websockets](#2-installing-libwebsockets)
+
  - [Building and Setting up PacMacro](#building-and-setting-up-pacmacro)
- - [Running PacMacrp](#running-pacmacro)
+ - [Running PacMacro](#running-pacmacro)
  - [Potentially Useful Link](#links-that-could-be-useful)
  - [Links to Version 2](https://github.com/pacmacro)  
    - [Server-Code](https://github.com/pacmacro/pm-server)
@@ -52,7 +55,7 @@ make install
 
 ## Building and Setting up PacMacro
 
-3.1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
+### 1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
 ```shell
 useradd -m -d /home/pacmacro -s /bin/bash pacmacro
 chown -R pacmacro:pacmacro  /home/pacmacro
@@ -61,12 +64,12 @@ chmod 0600 /home/pacmacro/.ssh/authorized_keys
 echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
 ```
 
-3.2 install some of the needed commands first
+### 2 install some of the needed commands first
 ```shell
 apt-get install -y git gcc g++ make cmake
 ```
 
-3.3 Building PacMacro
+### 3 Building PacMacro
 ```
 git clone https://github.com/CSSS/PacMacro.git
 cd PacMacro
@@ -76,14 +79,14 @@ cmake ..
 make
 ```
 
-3.4 Setting up nodejs and npm to work with PacMacro
+### 4 Setting up nodejs and npm to work with PacMacro
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 apt-get install -y nodejs
 npm install -g pm2
 ```
 
-3.5 Allow pm2 to run on port 80/433 without root
+### 5 Allow pm2 to run on port 80/433 without root
 >Adapted from http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#allow-pm2-to-bind-applications-on-ports-80-443-without-root
 ```shell
 echo 'alias pm2="authbind --deep pm2"' >> /home/pacmacro/.bashrc
@@ -92,7 +95,7 @@ touch /etc/authbind/byport/80
 chown pacmacro /etc/authbind/byport/80
 chmod 755 /etc/authbind/byport/80
 ```
-3.6 Setting up the environment
+### 6 Setting up the environment
  - Choose a password needed to access the control panel and run: `export PASSWORD='password'` Where password is your chosen password.
  - By default the server will use `port: 80`. If you want to use another port, do so by running the following: `export PORT=port` Where `port` is your chosen port.
 
