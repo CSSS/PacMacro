@@ -6,7 +6,7 @@
  - [Necessary Commands before building the game](#commands-you-need-to-go-through-first-to-before-trying-to-build-the-game)
    - [1. Installing jansson-2.11](#1-installing-jansson-211)
    - [2. Installing websockets](#2-installing-libwebsockets)
-
+   - [3. Installing some other commands](#3-installing-some-other-commands)
  - [Building and Setting up PacMacro](#building-and-setting-up-pacmacro)
  - [Running PacMacro](#running-pacmacro)
  - [Potentially Useful Link](#links-that-could-be-useful)
