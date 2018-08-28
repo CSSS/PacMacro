@@ -44,6 +44,8 @@ cd -
 apt-get install -y zlib1g-dev libssl-dev automake libtool
 ```
    1.2.2. install libwebsockets [instructions can also be found in `README.install` in `libwebsockets-1.22-chrome26-firefox18` folder]
+>Building and installing libwebsockets can become a pain in the ass real quick. So be patient and practice google-fu.
+>Follow instructions in the README.install file. The ./configure method is recommended over others
 ```shell
 wget https://github.com/warmcat/libwebsockets/archive/v1.22-chrome26-firefox18.tar.gz
 tar -xzf v1.22-chrome26-firefox18.tar.gz
