@@ -39,11 +39,11 @@ cd -
 
 ### 1.2 Installing libwebsockets
 
-   2.1. commands to install before installing libwebsockets
+   1.2.1. commands to install before installing libwebsockets
 ```shell
 apt-get install -y zlib1g-dev libssl-dev automake libtool
 ```
-   2.2. install libwebsockets [instructions can also be found in `README.install` in `libwebsockets-1.22-chrome26-firefox18` folder]
+   1.2.2. install libwebsockets [instructions can also be found in `README.install` in `libwebsockets-1.22-chrome26-firefox18` folder]
 ```shell
 wget https://github.com/warmcat/libwebsockets/archive/v1.22-chrome26-firefox18.tar.gz
 tar -xzf v1.22-chrome26-firefox18.tar.gz
@@ -54,7 +54,7 @@ make
 make install
 cd -
 ```
-   2.3. To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
+   1.2.3. To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
 
 ### 1.3 Installing some other commands
 ```shell
