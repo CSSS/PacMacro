@@ -20,7 +20,7 @@ This game was built on Ubuntu 16.04 due to a dependency that exists on an old we
 
 Recommend to run `apt-get update` before anything else
 
-1. Installing jansson-2.11
+### 1. Installing jansson-2.11
 ```shell
 wget http://www.digip.org/jansson/releases/jansson-2.11.tar.bz2
 bunzip2 -c jansson-2.11.tar.bz2 | tar xf -
@@ -31,7 +31,7 @@ make check
 make install
 ```
 
-2. Installing libwebsockets
+### 2. Installing libwebsockets
 
 2.1 commands to install before installing libwebsockets
 ```shell
@@ -50,7 +50,7 @@ make install
 ```
 2.3 To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
 
-3. Building PacMacro
+### 3. Building PacMacro
 
 3.1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
 ```shell
