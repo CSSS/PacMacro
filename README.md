@@ -76,6 +76,7 @@ chown -R pacmacro:pacmacro  /home/pacmacro
 chmod 700 /home/pacmacro/.ssh
 chmod 0600 /home/pacmacro/.ssh/authorized_keys
 echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
+#place any pertinent public keys inside of /home/pacmacro/.ssh/authorized_keys
 ```
 
 ### 2.2 Building PacMacro
