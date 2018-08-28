@@ -113,10 +113,7 @@ npm install -g pm2
 ### 2.4 Allowing pm2 to run on port 80/433 without root
 >Adapted from [Allow PM2 to bind applications on ports 80/443 without root](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#allow-pm2-to-bind-applications-on-ports-80-443-without-root)
 ```shell
-su - pacmacro
 echo 'alias pm2="authbind --deep pm2"' >> /home/pacmacro/.bashrc
-exit
-
 apt-get install authbind
 touch /etc/authbind/byport/80
 chown pacmacro /etc/authbind/byport/80
