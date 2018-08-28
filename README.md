@@ -19,7 +19,7 @@
 
 This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library.
 
-## Commands you need to go through first to before trying to build the game
+## Necessary Commands before building the game
 
 >Recommend to run `apt-get update` before anything else
 
@@ -101,8 +101,8 @@ exit
 
 >Acquired from [Installing Node.js via package manager on Debian and Ubuntu based Linux distributions](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
 ```shell
-#curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
-#apt-get install -y nodejs
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+apt-get install -y nodejs
 ```
 
 ### 4. Installing pm2 and allowing it to run on port 80/433 without root
