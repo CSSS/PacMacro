@@ -68,9 +68,11 @@ apt-get install -y git gcc g++ make cmake
 
 3.3 Building PacMacro
 ```
+git clone https://github.com/CSSS/PacMacro.git
+cd PacMacro
 mkdir build
 cd build
-cmake
+cmake ..
 make
 ```
 
