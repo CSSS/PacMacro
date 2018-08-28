@@ -87,7 +87,7 @@ cmake ..
 make
 ```
 
-### 2.3 Setting up Nodejs and NPM
+### 2.3 Setting up Nodejs and NPM and pm2
 ```shell
 apt-get update
 ```
@@ -99,6 +99,7 @@ su - pacmacro
 curl -sL https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash -
 source .profile
 nvm install 10.9.0
+npm install -g pm2
 exit
 ```
    2.3.2 Method 2
@@ -106,13 +107,13 @@ exit
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 apt-get install -y nodejs
+npm install -g pm2
 ```
 
-### 2.4 Installing pm2 and allowing it to run on port 80/433 without root
+### 2.4 Allowing pm2 to run on port 80/433 without root
 >Adapted from [Allow PM2 to bind applications on ports 80/443 without root](http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#allow-pm2-to-bind-applications-on-ports-80-443-without-root)
 ```shell
 su - pacmacro
-npm install -g pm2
 echo 'alias pm2="authbind --deep pm2"' >> /home/pacmacro/.bashrc
 exit
 
