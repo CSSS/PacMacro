@@ -5,7 +5,7 @@
 ## Table of Contents
  - [Necessary Commands before building the game](#commands-you-need-to-go-through-first-to-before-trying-to-build-the-game)
  - [Building and Setting up PacMacro](#building-and-setting-up-pacmacro)
- - [Potential Library to add after Program built](#potential-library-needed-after-program-is-built)
+ - [Running PacMacrp](#running-pacmacro)
  - [Potentially Useful Link](#links-that-could-be-useful)
  - [Links to Version 2](https://github.com/pacmacro)  
    - [Server-Code](https://github.com/pacmacro/pm-server)
