@@ -88,12 +88,12 @@ make
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 apt-get install -y nodejs
-npm install -g pm2
 ```
 
-### 4. Allow pm2 to run on port 80/433 without root
+### 4. Installing pm2 and allowing it to run on port 80/433 without root
 >Adapted from http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#allow-pm2-to-bind-applications-on-ports-80-443-without-root
 ```shell
+npm install -g pm2
 echo 'alias pm2="authbind --deep pm2"' >> /home/pacmacro/.bashrc
 apt-get install authbind
 touch /etc/authbind/byport/80
