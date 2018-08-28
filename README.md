@@ -84,7 +84,7 @@ cmake ..
 make
 ```
 
-### 3. Setting up nodejs and npm to work with PacMacro
+### 3. Setting up Nodejs and NPM
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 apt-get install -y nodejs
