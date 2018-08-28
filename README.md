@@ -104,7 +104,9 @@ pm2 start server.js
 ```
 
 3.8 Running PacMacro
-`./pacmacro &`: This start the app and put it into the background.
+```shell
+./pacmacro &
+```
 
 ## Links that could be useful  
  - https://github.com/creationix/nvm#install-script
