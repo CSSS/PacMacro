@@ -91,6 +91,7 @@ make
 ```shell
 apt-get update
 ```
+   2.3.1 Method 1  
 >Adapted from [How To Install Node.js on Ubuntu 16.04: How To Install Using NVM](https://www.digitalocean.com/community/tutorials/how-to-install-node-js-on-ubuntu-16-04#how-to-install-using-nvm)
 ```shell
 apt-get install -y build-essential libssl-dev
@@ -100,7 +101,7 @@ source .profile
 nvm install 10.9.0
 exit
 ```
-
+   2.3.2 Method 2
 >Acquired from [Installing Node.js via package manager on Debian and Ubuntu based Linux distributions](https://nodejs.org/en/download/package-manager/#debian-and-ubuntu-based-linux-distributions)
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
