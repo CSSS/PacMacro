@@ -53,9 +53,14 @@ make install
 ```
    2.3. To test if it was succesful, run `libwebsockets-test-server`. If error arise, run `/sbin/ldconfig -v` to get rid of them
 
+### 3. Installing some other commands
+```shell
+apt-get install -y git gcc g++ make cmake
+```
+
 ## Building and Setting up PacMacro
 
-### 1 Create PacMacro user and allowing PacMacro user to log in with pubkeys
+### 1. Create PacMacro user and allowing PacMacro user to log in with pubkeys
 ```shell
 useradd -m -d /home/pacmacro -s /bin/bash pacmacro
 chown -R pacmacro:pacmacro  /home/pacmacro
@@ -64,12 +69,7 @@ chmod 0600 /home/pacmacro/.ssh/authorized_keys
 echo 'PubkeyAuthentication yes' >> /etc/ssh/sshd_config
 ```
 
-### 2 install some of the needed commands first
-```shell
-apt-get install -y git gcc g++ make cmake
-```
-
-### 3 Building PacMacro
+### 2. Building PacMacro
 ```
 git clone https://github.com/CSSS/PacMacro.git
 cd PacMacro
@@ -79,14 +79,14 @@ cmake ..
 make
 ```
 
-### 4 Setting up nodejs and npm to work with PacMacro
+### 3. Setting up nodejs and npm to work with PacMacro
 ```shell
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 apt-get install -y nodejs
 npm install -g pm2
 ```
 
-### 5 Allow pm2 to run on port 80/433 without root
+### 4. Allow pm2 to run on port 80/433 without root
 >Adapted from http://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/#allow-pm2-to-bind-applications-on-ports-80-443-without-root
 ```shell
 echo 'alias pm2="authbind --deep pm2"' >> /home/pacmacro/.bashrc
@@ -95,7 +95,7 @@ touch /etc/authbind/byport/80
 chown pacmacro /etc/authbind/byport/80
 chmod 755 /etc/authbind/byport/80
 ```
-### 6 Setting up the environment
+### 5. Setting up the environment
  - Choose a password needed to access the control panel and run: `export PASSWORD='password'` Where password is your chosen password.
  - By default the server will use `port: 80`. If you want to use another port, do so by running the following: `export PORT=port` Where `port` is your chosen port.
 
