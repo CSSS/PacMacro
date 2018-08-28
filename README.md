@@ -10,7 +10,7 @@
  - [Building and Setting up PacMacro](#building-and-setting-up-pacmacro)
    - [1. Create PacMacro User and allow login via publickeys only](#1-create-pacmacro-user-and-allowing-pacmacro-user-to-log-in-with-pubkeys)
    - [2. Building PacMacro](#2-building-pacmacro)
-   - [3. Setting up Nodejs and NPM](#3-setting-up-nodejs-and-npm-to-work-with-pacmacro)
+   - [3. Setting up Nodejs and NPM](#3-setting-up-nodejs-and-npm)
    - [4. Allow PM2 to run on port 80/433 without root](#4-allow-pm2-to-run-on-port-80433-without-root)
    - [5. Setting up the Environment](#5-setting-up-the-environment)
  - [Running PacMacro](#running-pacmacro)
