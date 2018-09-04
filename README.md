@@ -17,7 +17,7 @@
  - [Links to Version 2](https://github.com/pacmacro)  
 
 
-This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library. This also potentially makes this code open to being taken advantage of as it is commonly used in botnet attacks such as one case being part of a brute-force password dictionary attack against a remote server. Because of this vulernability, it is strongly recommended to run this computer behind a firewall and allow connections only from specific IPs, this can be done at a software level with [`ufw`](https://help.ubuntu.com/community/UFW) or using DigitalOcean firewalls. To get your IP, you can go to [Find-IP-Address](https://www.iplocation.net/find-ip-address).
+This game was built on Ubuntu 16.04 due to a dependency that exists on an old websockets library. This also potentially makes this code open to being taken advantage of as it is commonly used in botnet attacks such as one case being part of a brute-force password dictionary attack against a remote server. Because of this vulernability, it is strongly recommended to run this program behind a firewall and allow connections only from specific IPs, this can be done at a software level with [`ufw`](https://help.ubuntu.com/community/UFW) or using DigitalOcean firewalls. To get your IP, you can go to [Find-IP-Address](https://www.iplocation.net/find-ip-address).
 
 Unless otherwise specified, all commands are run as root  
 ## 1. Necessary Commands before building the game
